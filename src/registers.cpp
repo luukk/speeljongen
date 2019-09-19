@@ -1,7 +1,7 @@
 #include <iostream>
 #include "registers.h"
 
-namespace cpu {
+namespace cpu { 
     void registers::setA(uint8_t a) {
         this->a = a;
     };
@@ -32,11 +32,6 @@ namespace cpu {
 
     void registers::setL(uint8_t l) {
         this->l = l;
-    };
-
-    void registers::setAF(uint16_t af) {
-        this->a = (uint8_t)((af & 0xFF00) >> 8);
-        this->f = (uint8_t)(af & 0x00FF);
     };
     
     void registers::setBC(uint16_t bc) {
@@ -74,7 +69,7 @@ namespace cpu {
     uint8_t registers::getE() {
         return this->e;
     };
-
+    /* for debugging purposes */
     uint8_t registers::getF() {
         return this->f;
     };
@@ -85,10 +80,6 @@ namespace cpu {
 
     uint8_t registers::getL() {
         return this->l;
-    };
-
-    uint16_t registers::getAF(){
-        return ((uint16_t)(this->a) << 8) | this->f;
     };
 
     uint16_t registers::getBC(){

@@ -3,7 +3,14 @@
 namespace cpu {
     class registers {
         private: 
-            uint8_t a, b, c, d, e, f, h, l;
+            uint8_t a = 0;
+            uint8_t b = 0;
+            uint8_t c = 0;
+            uint8_t d = 0;
+            uint8_t e = 0;
+            uint8_t f = 0;
+            uint8_t h = 0;
+            uint8_t l = 0;
             uint16_t sp;
             uint16_t pc; 
         public:
@@ -15,7 +22,6 @@ namespace cpu {
             uint8_t getF();
             uint8_t getH();
             uint8_t getL();
-            uint16_t getAF();
             uint16_t getBC();
             uint16_t getDE();
             uint16_t getHL();
@@ -27,7 +33,6 @@ namespace cpu {
             void setF(uint8_t f);
             void setH(uint8_t h);
             void setL(uint8_t l);
-            void setAF(uint16_t af);
             void setBC(uint16_t bc);
             void setDE(uint16_t de);
             void setHL(uint16_t hl);
