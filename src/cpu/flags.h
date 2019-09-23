@@ -13,9 +13,9 @@ namespace cpu {
             uint8_t transformBitPosition(bool, int);
         public:
             flags(registers* registerList);
-            uint8_t getCarry();
-            uint8_t getHalfCarry();
-            uint8_t getSubtract();
+            bool getCarry();
+            bool getHalfCarry();
+            bool getSubtract();
             bool getZero();
             void setCarry(bool);
             void setHalfCarry(bool);

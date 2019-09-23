@@ -7,12 +7,20 @@ namespace cpu {
         reg = registerList;
     }
 
-    uint8_t flags::getCarry() {
-        // return (reg->getF() >> 4) & 0x01;
+    bool flags::getCarry() {
+        return (reg->getF() >> CARRY_BIT_POSITION) & 0x01;
+    }
+
+    bool flags::getHalfCarry() {
+        return (reg->getF() >> HALF_CARRY_BIT_POSITION) & 0x01;
+    }
+    
+    bool flags::getSubtract() {
+        return (reg->getF() >> SUB_BIT_POSITION) & 0x01;
     }
 
     bool flags::getZero() {
-        // return((reg->getF() >> 7) & 0x01);
+        return(reg->getF() >> ZERO_BIT_POSITION & 0x01);
     }
 
     void flags::setCarry(bool bit) {
