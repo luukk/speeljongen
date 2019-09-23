@@ -1,5 +1,6 @@
 #include <iostream>
 #include "mmu.h"
+#include "bootRom.h"
 
 namespace memory {
     uint8_t mmu::read(uint16_t address, uint8_t byte) {
@@ -7,6 +8,7 @@ namespace memory {
         if(inRange(address, 0x00, 0x7FFF)) {
             if(inRange(address, 0x0, 0xFF) && bootRomActive()) {
                 std::cout << "fetching boot rom opcode";
+                return bootDMG[address];
             }
         }
 

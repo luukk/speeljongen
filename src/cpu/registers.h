@@ -11,8 +11,8 @@ namespace cpu {
             uint8_t f = 0;
             uint8_t h = 0;
             uint8_t l = 0;
-            uint16_t sp;
-            uint16_t pc; 
+            uint16_t sp = 0x00;
+            uint16_t pc = 0x00; 
         public:
             uint8_t getA();
             uint8_t getB();
