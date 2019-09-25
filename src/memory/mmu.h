@@ -1,7 +1,7 @@
 #pragma once
 
 namespace memory {
-    class mmu {
+    class Mmu {
         uint8_t rom0[16384];
         uint8_t rom1[16384];
         uint8_t vram[8192];

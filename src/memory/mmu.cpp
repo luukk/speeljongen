@@ -3,7 +3,7 @@
 #include "bootRom.h"
 
 namespace memory {
-    uint8_t mmu::read(uint16_t address, uint8_t byte) {
+    uint8_t Mmu::read(uint16_t address, uint8_t byte) {
         /* ROM */
         if(inRange(address, 0x00, 0x7FFF)) {
             if(inRange(address, 0x0, 0xFF) && bootRomActive()) {
@@ -49,23 +49,23 @@ namespace memory {
         
     }
 
-    void mmu::write(uint16_t address) {
+    void Mmu::write(uint16_t address) {
          
     }
 
-    uint8_t mmu::readIo(uint16_t address) const {
+    uint8_t Mmu::readIo(uint16_t address) const {
 
     } 
 
-    void mmu::writeIo(u_int16_t address, uint8_t byte) {
+    void Mmu::writeIo(u_int16_t address, uint8_t byte) {
 
     }
 
-    bool mmu::bootRomActive() const {
+    bool Mmu::bootRomActive() const {
 
     }
 
-    bool mmu::inRange(uint16_t address, int addressLow, int addressHigh ) const {
+    bool Mmu::inRange(uint16_t address, int addressLow, int addressHigh ) const {
         return address >= addressLow && address <= addressHigh;
     }
 }

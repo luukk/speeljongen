@@ -1,14 +1,16 @@
 #include <iostream>
-#include "src/cpu/registers.h"
-#include "src/cpu/flags.h"
-#include "src/memory/mmu.h"
+#include <memory>
+#include "src/gameboy.h"
+
+
 
 int main() {
+    std::unique_ptr<Gameboy> gameboy(new Gameboy());
+
+    // gameboy();
     // cpu::registers registerList;
     // cpu::flags flagSet(&registerList);
-    memory::mmu mmu;
 
-    mmu.read(0x8000, 20);
 
     // flagSet.setCarry(0);
     // flagSet.setZero(1);

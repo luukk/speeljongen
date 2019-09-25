@@ -1,7 +1,7 @@
 #pragma once
 
 namespace cpu {
-    class registers {
+    class Registers {
         private: 
             uint8_t a = 0;
             uint8_t b = 0;

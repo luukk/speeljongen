@@ -7,12 +7,12 @@
 #define ZERO_BIT_POSITION 4
 
 namespace cpu {
-    class flags {
+    class Flags {
         private:
-            registers *reg;
+            Registers *reg;
             uint8_t transformBitPosition(bool, int);
         public:
-            flags(registers* registerList);
+            Flags(Registers* registerList);
             bool getCarry();
             bool getHalfCarry();
             bool getSubtract();

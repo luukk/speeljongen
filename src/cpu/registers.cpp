@@ -2,95 +2,95 @@
 #include "registers.h"
 
 namespace cpu { 
-    void registers::setA(uint8_t a) {
+    void Registers::setA(uint8_t a) {
         this->a = a;
     };
 
-    void registers::setB(uint8_t b) {
+    void Registers::setB(uint8_t b) {
         this->b = b;
     };
 
-    void registers::setC(uint8_t c) {
+    void Registers::setC(uint8_t c) {
         this->c = c;
     };
 
-    void registers::setD(uint8_t d) {
+    void Registers::setD(uint8_t d) {
         this->d = d;
     };
 
-    void registers::setE(uint8_t e) {
+    void Registers::setE(uint8_t e) {
         this->e = e;
     };
 
-    void registers::setF(uint8_t f) {
+    void Registers::setF(uint8_t f) {
         this->f = f;
     };
 
-    void registers::setH(uint8_t h) {
+    void Registers::setH(uint8_t h) {
         this->h = h;
     };
 
-    void registers::setL(uint8_t l) {
+    void Registers::setL(uint8_t l) {
         this->l = l;
     };
     
-    void registers::setBC(uint16_t bc) {
+    void Registers::setBC(uint16_t bc) {
         this->b = (uint8_t)((bc & 0xFF00) >> 8);
         this->c = (uint8_t)(bc & 0x00FF);
     };
   
-    void registers::setDE(uint16_t de) {
+    void Registers::setDE(uint16_t de) {
         this->d = (uint8_t)((de & 0xFF00) >> 8);
         this->e = (uint8_t)(de & 0x00FF);
     };
   
-    void registers::setHL(uint16_t hl) {
+    void Registers::setHL(uint16_t hl) {
         this->h = (uint8_t)((hl & 0xFF00) >> 8);
         this->l = (uint8_t)(hl & 0x00FF);
     };
     
     /*  GETTERS */
-    uint8_t registers::getA() {
+    uint8_t Registers::getA() {
         return this->a;
     };
 
-    uint8_t registers::getB() {
+    uint8_t Registers::getB() {
         return this->b;
     };
 
-    uint8_t registers::getC() {
+    uint8_t Registers::getC() {
         return this->c;
     };
 
-    uint8_t registers::getD() {
+    uint8_t Registers::getD() {
         return this->d;
     };
 
-    uint8_t registers::getE() {
+    uint8_t Registers::getE() {
         return this->e;
     };
     /* for debugging purposes */
-    uint8_t registers::getF() {
+    uint8_t Registers::getF() {
         return this->f;
     };
 
-    uint8_t registers::getH() {
+    uint8_t Registers::getH() {
         return this->h;
     };
 
-    uint8_t registers::getL() {
+    uint8_t Registers::getL() {
         return this->l;
     };
 
-    uint16_t registers::getBC(){
+    uint16_t Registers::getBC(){
         return ((uint16_t)(this->b) << 8) | this->c;
     };
 
-    uint16_t registers::getDE(){
+    uint16_t Registers::getDE(){
         return ((uint16_t)(this->d) << 8) | this->e;
     };
 
-    uint16_t registers::getHL(){
+    uint16_t Registers::getHL(){
         return ((uint16_t)(this->h) << 8) | this->l;
     }
 }
