@@ -48,6 +48,10 @@ namespace cpu {
         this->h = (uint8_t)((hl & 0xFF00) >> 8);
         this->l = (uint8_t)(hl & 0x00FF);
     };
+
+    void Registers::incrementPC() {
+        this->pc++;
+    }
     
     /*  GETTERS */
     uint8_t Registers::getA() {
@@ -92,6 +96,10 @@ namespace cpu {
 
     uint16_t Registers::getHL(){
         return ((uint16_t)(this->h) << 8) | this->l;
+    }
+
+    uint16_t Registers::getPC() {
+        return this->pc;
     }
 }
 

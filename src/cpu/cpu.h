@@ -9,8 +9,12 @@ namespace cpu {
         public:
             CPU(memory::Mmu *_mmu);
             void tick();
-            void excecuteOpcode(uint8_t, uint16_t);
         private:
             memory::Mmu *mmu;
+            Registers registerList;
+            Flags flags;
+
+            void excecuteOpcode(uint8_t, uint16_t);
+            uint8_t fetchOpcode(uint16_t pc);
     };
 }

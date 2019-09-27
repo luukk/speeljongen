@@ -25,6 +25,7 @@ namespace cpu {
             uint16_t getBC();
             uint16_t getDE();
             uint16_t getHL();
+            uint16_t getPC();
             void setA(uint8_t a);
             void setB(uint8_t b);
             void setC(uint8_t c);
@@ -36,5 +37,6 @@ namespace cpu {
             void setBC(uint16_t bc);
             void setDE(uint16_t de);
             void setHL(uint16_t hl);
+            void incrementPC();
     };
 }

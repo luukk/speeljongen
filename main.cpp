@@ -7,6 +7,8 @@
 int main() {
     std::unique_ptr<Gameboy> gameboy(new Gameboy());
 
+    gameboy->run();
+    // tick();
     // gameboy();
     // cpu::registers registerList;
     // cpu::flags flagSet(&registerList);
