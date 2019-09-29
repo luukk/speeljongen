@@ -49,6 +49,10 @@ namespace cpu {
         this->l = (uint8_t)(hl & 0x00FF);
     };
 
+    void Registers::setSP(uint16_t sp) {
+        this->sp = sp;
+    }
+
     void Registers::incrementPC() {
         this->pc++;
     }
@@ -100,6 +104,10 @@ namespace cpu {
 
     uint16_t Registers::getPC() {
         return this->pc;
+    }
+    
+    uint16_t Registers::getSP() {
+        return this->sp;
     }
 }
 

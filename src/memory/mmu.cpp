@@ -7,7 +7,7 @@ namespace memory {
         /* ROM */
         if(inRange(address, 0x00, 0x7FFF)) {
             if(inRange(address, 0x0, 0xFF) && bootRomActive()) {
-                std::cout << "fetching boot rom opcode" << unsigned(bootDMG[address]) << '\n';
+                std::cout << "fetching boot rom opcode: " << unsigned(bootDMG[address]) << '\n';
                 return bootDMG[address];
             }
         }
