@@ -4,7 +4,7 @@
 namespace cpu {
     CPU::CPU(memory::Mmu *_mmu) :
     flags(&registerList),
-    opcodes(&registerList, _mmu)
+    opcodes(&registerList, &flags, _mmu)
     {
         mmu = _mmu;
     };
