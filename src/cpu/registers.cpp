@@ -3,7 +3,6 @@
 
 namespace cpu { 
     void Registers::setA(uint8_t a) {
-        std::cout << "a set";
         this->a = a;
     };
 
@@ -54,14 +53,16 @@ namespace cpu {
         this->sp = sp;
     }
 
+    void Registers::setPC(uint16_t pc) {
+        this->pc = pc;
+    }
+
     void Registers::incrementPC() {
         this->pc++;
     }
     
     /*  GETTERS */
     uint8_t Registers::getA() {
-        std::cout << "a get" << (int)this->a << "\n";
-
         return this->a;
     };
 

@@ -18,6 +18,7 @@ namespace cpu {
             Opcodes opcodes;
 
             void excecuteOpcode(uint8_t);
+            void excecuteCBOpcode(uint8_t);
             uint8_t fetchOpcode(uint16_t pc);
     };
 }

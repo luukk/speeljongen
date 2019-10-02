@@ -39,6 +39,7 @@ namespace cpu {
             void setDE(uint16_t de);
             void setHL(uint16_t hl);
             void setSP(uint16_t sp);
+            void setPC(uint16_t pc);
             void incrementPC();
     };
 }

@@ -19,6 +19,6 @@ namespace memory {
             bool inRange(uint16_t, int, int) const;
         public: 
             uint8_t read(uint16_t);
-            void write(uint16_t);
+            void write(uint16_t, uint8_t);
     };
 }
