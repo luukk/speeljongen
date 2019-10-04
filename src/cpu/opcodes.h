@@ -19,6 +19,7 @@ namespace cpu {
             Flags *flag;
             
             void opcodeNop();
+            void opcodeLd(void (cpu::Registers::*)(uint8_t));
             void opcodeLd(void (cpu::Registers::*)(uint16_t));
             void opcodeXor(uint8_t (cpu::Registers::*)());
             void opcodeLdd(uint16_t (cpu::Registers::*)(), uint8_t (cpu::Registers::*)());
@@ -27,6 +28,7 @@ namespace cpu {
             void _opcodeXor(uint8_t);
             void _opcodeBit(const uint8_t bit, const uint8_t registerValue);
             void opcodeBit(const uint8_t, uint8_t (cpu::Registers::*)());
+            void opcodeLdhIntoA();
             uint8_t getByteFromPC();
             int8_t getSignedByteFromPC();
             bool shouldBranch(Condition);

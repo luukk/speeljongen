@@ -11,11 +11,14 @@ namespace cpu {
     void Opcodes::opcodeBank(uint8_t opcode) {
         switch (opcode) {
             case 0x00:opcodeNop();break;
+            case 0x0E:opcodeLd(&Registers::setC);break;
             case 0x20:opcodeJr(Condition::NZ);break;
+            case 0x21:opcodeLd(&Registers::setHL);break;
             case 0x31:opcodeLd(&Registers::setSP);break;
             case 0x32:opcodeLdd(&Registers::getHL, &Registers::getA);break;
-            case 0x21:opcodeLd(&Registers::setHL);break;
+            case 0x3E:opcodeLd(&Registers::setA);break;
             case 0xAF:opcodeXor(&Registers::getA);break;
+            case 0xE2:opcodeLdhIntoA();break;
         }
     }
 
@@ -32,10 +35,15 @@ namespace cpu {
 
     /**LOAD**/
 
+    void Opcodes::opcodeLd(void (cpu::Registers::*setRegister)(uint8_t)) {
+       uint8_t byte = getByteFromPC();
+
+       (reg->*setRegister)(byte);
+    }
+
     void Opcodes::opcodeLd(void (cpu::Registers::*setRegister)(uint16_t)) {
         uint8_t lowByte = getByteFromPC();
         uint8_t highByte = getByteFromPC();
-        std::cout << "Opcodes::opcodeLd loading opcode: " << unsigned(lowByte) << ' ' << unsigned(highByte) << '\n'; 
 
         uint16_t composedBytes = static_cast<uint16_t>((highByte << 8) | lowByte);
         (reg->*setRegister)(composedBytes);
@@ -59,6 +67,14 @@ namespace cpu {
     void Opcodes::opcodeXor(uint8_t (cpu::Registers::*registerValue)()) {
         uint8_t regAValue = (reg->*registerValue)();
         _opcodeXor(regAValue);
+    }
+
+    /**LDH**/
+    void Opcodes::opcodeLdhIntoA() {
+        uint8_t regCValue = reg->getC();
+        auto address = 0xFF00 + regCValue;
+
+        mmu->write(address,reg->getA());
     }
 
     /**LDD**/
@@ -91,8 +107,8 @@ namespace cpu {
 
         std::cout << "opcodJR offset: " <<  static_cast<int16_t>(offset) << "\n"; 
         std::cout << "opcodJR new pc location: " <<  static_cast<uint16_t>(pc + offset) << "\n"; 
-        
-        uint16_t newPC =  pc + offset;
+        std::cout << "opcodeJR hl: " << static_cast<uint16_t>(reg->getHL()) << "\n";
+        uint16_t newPC =  static_cast<uint16_t>(pc + offset);
         reg->setPC(newPC);
     }
 
