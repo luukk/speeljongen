@@ -6,6 +6,7 @@
 
 
 namespace cpu {
+    bool blockInterrupts = false;
     enum class Condition {
         NZ,
         Z,
@@ -21,14 +22,19 @@ namespace cpu {
             void opcodeNop();
             void opcodeLd(void (cpu::Registers::*)(uint8_t));
             void opcodeLd(void (cpu::Registers::*)(uint16_t));
+            void opcodeLd(uint16_t (cpu::Registers::*)(), uint8_t (cpu::Registers::*)());
             void opcodeXor(uint8_t (cpu::Registers::*)());
             void opcodeLdd(uint16_t (cpu::Registers::*)(), uint8_t (cpu::Registers::*)());
             void opcodeJr();
             void opcodeJr(Condition);        
             void _opcodeXor(uint8_t);
-            void _opcodeBit(const uint8_t bit, const uint8_t registerValue);
+            void _opcodeBit(const uint8_t bit, const uint8_t);
             void opcodeBit(const uint8_t, uint8_t (cpu::Registers::*)());
             void opcodeLdhIntoA();
+            void opcodeLdhIntoData();
+            void _opcodeInc(void (cpu::Registers::*)(uint8_t), uint8_t);
+            void opcodeInc(void (cpu::Registers::*)(uint8_t), uint8_t (cpu::Registers::*)());  
+            void opcodeDisableInterrupt();
             uint8_t getByteFromPC();
             int8_t getSignedByteFromPC();
             bool shouldBranch(Condition);

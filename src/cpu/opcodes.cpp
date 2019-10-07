@@ -11,16 +11,21 @@ namespace cpu {
     void Opcodes::opcodeBank(uint8_t opcode) {
         switch (opcode) {
             case 0x00:opcodeNop();break;
+            case 0x0C:opcodeInc(&Registers::setC, &Registers::getC);
             case 0x0E:opcodeLd(&Registers::setC);break;
             case 0x20:opcodeJr(Condition::NZ);break;
             case 0x21:opcodeLd(&Registers::setHL);break;
             case 0x31:opcodeLd(&Registers::setSP);break;
             case 0x32:opcodeLdd(&Registers::getHL, &Registers::getA);break;
             case 0x3E:opcodeLd(&Registers::setA);break;
+            case 0x77:opcodeLd(&Registers::getHL, &Registers::getA);
             case 0xAF:opcodeXor(&Registers::getA);break;
+            case 0xE0:opcodeLdhIntoData();break;
             case 0xE2:opcodeLdhIntoA();break;
+            case 0xF3:opcodeDisableInterrupt();break;
         }
     }
+
 
     void Opcodes::cbOpcodeBank(uint8_t opcode) {
         switch (opcode) {
@@ -49,6 +54,13 @@ namespace cpu {
         (reg->*setRegister)(composedBytes);
     }
 
+    void Opcodes::opcodeLd(uint16_t (cpu::Registers::*addressRegister)(), uint8_t (cpu::Registers::*registerValue)()) {
+        uint16_t address = (reg->*addressRegister)();
+        uint8_t byte = (reg->*registerValue)();
+
+        mmu->write(address,byte);
+    }
+
     /**XOR**/
 
     void Opcodes::_opcodeXor(uint8_t value) {
@@ -70,11 +82,35 @@ namespace cpu {
     }
 
     /**LDH**/
+    
     void Opcodes::opcodeLdhIntoA() {
         uint8_t regCValue = reg->getC();
         auto address = 0xFF00 + regCValue;
 
         mmu->write(address,reg->getA());
+    }
+
+    void Opcodes::opcodeLdhIntoData() {
+        uint8_t offset = getByteFromPC();
+        auto address = 0xFF00 + offset;
+
+        mmu->write(address, reg->getA());
+    }
+
+    /**INC**/
+
+    void Opcodes::_opcodeInc(void (cpu::Registers::*setRegister)(uint8_t), uint8_t registerValue) {
+        auto increment = registerValue++;
+        (reg->*setRegister)(increment);
+    }
+
+    void Opcodes::opcodeInc(void (cpu::Registers::*setRegister)(uint8_t), uint8_t (cpu::Registers::*registerValue)()) {
+        uint8_t value = (reg->*registerValue)();
+        _opcodeInc(setRegister, value);
+
+        flag->setZero(value == 0);
+        flag->setSubtract(false);
+        flag->setHalfCarry((value & 0x0F) == 0x00);
     }
 
     /**LDD**/
@@ -101,6 +137,8 @@ namespace cpu {
         _opcodeBit(bit, regValue);
     };
 
+    /**JUMP**/
+
     void Opcodes::opcodeJr() {
         int8_t offset = getSignedByteFromPC();
         uint16_t pc = reg->getPC();
@@ -120,6 +158,12 @@ namespace cpu {
             getSignedByteFromPC();
         }
         std::cout << "opcodeJr flag stat: " << flag->getZero() << "\n";
+    }
+
+    /**INTERRUPTS**/
+
+    void Opcodes::opcodeDisableInterrupt() {
+        blockInterrupts = false;
     }
 
 
