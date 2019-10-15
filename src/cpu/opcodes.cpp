@@ -3,6 +3,8 @@
 #include "../bitUtils.h"
 
 namespace cpu {
+    bool blockInterrupts = false;
+
     Opcodes::Opcodes(Registers* _reg, Flags* _flag, memory::Mmu* _mmu) {
         reg = _reg;
         flag = _flag;
@@ -11,8 +13,9 @@ namespace cpu {
     void Opcodes::opcodeBank(uint8_t opcode) {
         switch (opcode) {
             case 0x00:opcodeNop();break;
-            case 0x0C:opcodeInc(&Registers::setC, &Registers::getC);
+            case 0x0C:opcodeInc(&Registers::setC, &Registers::getC);break;
             case 0x0E:opcodeLd(&Registers::setC);break;
+            case 0x11:opcodeLd(&Registers::setDE);break;
             case 0x20:opcodeJr(Condition::NZ);break;
             case 0x21:opcodeLd(&Registers::setHL);break;
             case 0x31:opcodeLd(&Registers::setSP);break;
@@ -21,6 +24,7 @@ namespace cpu {
             case 0x77:opcodeLd(&Registers::getHL, &Registers::getA);
             case 0xAF:opcodeXor(&Registers::getA);break;
             case 0xE0:opcodeLdhIntoData();break;
+            case 0x1A:opcodeLd(&Registers::getA, &Registers::getDE);break;
             case 0xE2:opcodeLdhIntoA();break;
             case 0xF3:opcodeDisableInterrupt();break;
         }
@@ -59,6 +63,13 @@ namespace cpu {
         uint8_t byte = (reg->*registerValue)();
 
         mmu->write(address,byte);
+    }
+
+    void Opcodes::opcodeLd(uint8_t (cpu::Registers::*addressRegister)(), uint16_t (cpu::Registers::*registerValue)()) {
+        uint16_t val = (reg->*registerValue)();
+        // auto memoryValue = mmu->read(val);
+
+        std::cout << "yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: " << unsigned(val); 
     }
 
     /**XOR**/
@@ -163,7 +174,7 @@ namespace cpu {
     /**INTERRUPTS**/
 
     void Opcodes::opcodeDisableInterrupt() {
-        blockInterrupts = false;
+        cpu::blockInterrupts = true;
     }
 
 

@@ -1,14 +1,17 @@
 #pragma once
+#include <vector>
 #include "cpu/cpu.h"
 #include "memory/mmu.h"
-
+#include "cartridge/cartridge.h"
 
 class Gameboy {
     public:
-        Gameboy();
+        Gameboy(std::vector<uint8_t>);
         void run();
     private:
         void tick();
+        
+        Cartridge cartridge;
 
         cpu::CPU cpu;
         memory::Mmu mmu;

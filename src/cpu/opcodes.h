@@ -6,7 +6,6 @@
 
 
 namespace cpu {
-    bool blockInterrupts = false;
     enum class Condition {
         NZ,
         Z,
@@ -23,6 +22,7 @@ namespace cpu {
             void opcodeLd(void (cpu::Registers::*)(uint8_t));
             void opcodeLd(void (cpu::Registers::*)(uint16_t));
             void opcodeLd(uint16_t (cpu::Registers::*)(), uint8_t (cpu::Registers::*)());
+            void opcodeLd(uint8_t (cpu::Registers::*)(), uint16_t (cpu::Registers::*)());
             void opcodeXor(uint8_t (cpu::Registers::*)());
             void opcodeLdd(uint16_t (cpu::Registers::*)(), uint8_t (cpu::Registers::*)());
             void opcodeJr();

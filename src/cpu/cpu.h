@@ -6,6 +6,7 @@
 #include <cstdint>
 
 namespace cpu {
+    extern bool blockInterrupts;
     class CPU {
         public:
             CPU(memory::Mmu *_mmu);

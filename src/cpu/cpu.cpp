@@ -1,7 +1,7 @@
 #include <iostream>
 #include "cpu.h"
 
-namespace cpu {
+namespace cpu { 
     CPU::CPU(memory::Mmu *_mmu) :
     flags(&registerList),
     opcodes(&registerList, &flags, _mmu)
@@ -30,7 +30,6 @@ namespace cpu {
     uint8_t CPU::fetchOpcode(uint16_t pc) {   
         uint8_t opcode = mmu->read(pc);
         registerList.incrementPC();
-
         return opcode;
     }
 

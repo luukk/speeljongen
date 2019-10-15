@@ -1,13 +1,21 @@
 #include <iostream>
 #include <memory>
 #include "src/gameboy.h"
-
+#include "src/files.h"
 
 
 int main() {
-    std::unique_ptr<Gameboy> gameboy(new Gameboy());
-
+    auto readBytes = read_bytes("games/tetris.gb");
+    std::unique_ptr<Gameboy> gameboy(new Gameboy(readBytes));
+    
     gameboy->run();
+
+    int x = 0;
+    //24590
+    // while(x <=24600) {
+    //     gameboy->run();
+    //     x++;
+    // }
     // tick();
     // gameboy();
     // cpu::registers registerList;

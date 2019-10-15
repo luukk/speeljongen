@@ -10,10 +10,16 @@ namespace memory {
                 std::cout << "Mmu::read fetching boot rom opcode: " << unsigned(bootDMG[address]) << '\n';
                 return bootDMG[address];
             }
+            /*external */
         }
 
         /* VRAM */
         if(inRange(address, 0x8000, 0x9FFF)) {
+
+        }
+
+          /* External (cartridge) RAM */
+        if (inRange(address, 0xA000, 0xBFFF)) {
 
         }
 
