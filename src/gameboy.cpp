@@ -5,7 +5,7 @@
 // #include 
 
 Gameboy::Gameboy(std::vector<uint8_t> cartridgeData):
-    cartridge(cartridgeData, headerInformation(cartridgeData)),
+    cartridge(getCartridge(std::move(cartridgeData))),
     cpu(&mmu)
 {
     // std::cout << &info;

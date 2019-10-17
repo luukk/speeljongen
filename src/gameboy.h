@@ -11,7 +11,7 @@ class Gameboy {
     private:
         void tick();
         
-        Cartridge cartridge;
+        std::shared_ptr<Cartridge> cartridge;
 
         cpu::CPU cpu;
         memory::Mmu mmu;

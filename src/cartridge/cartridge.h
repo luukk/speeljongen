@@ -75,13 +75,25 @@ class CartridgeHeaderInformation {
 
 extern std::unique_ptr<CartridgeHeaderInformation> headerInformation(std::vector<uint8_t>);
 
+
 class Cartridge {
     public:
         Cartridge(
             std::vector<uint8_t>,
             std::shared_ptr<CartridgeHeaderInformation>
         );
+        virtual ~Cartridge() = default;
+
     protected: 
         std::vector<uint8_t> rom;
         std::shared_ptr<CartridgeHeaderInformation> cartridgeInformation;
+};
+
+std::shared_ptr<Cartridge> getCartridge(std::vector<uint8_t>);
+
+class ROMOnly: public Cartridge {
+    public:
+        ROMOnly(std::vector<uint8_t>, std::unique_ptr<CartridgeHeaderInformation>);
+        uint8_t readByte(uint16_t);
+        void write(uint16_t, uint8_t);
 };

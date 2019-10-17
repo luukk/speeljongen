@@ -84,9 +84,28 @@ RamSize getRamSize(uint8_t ramSize) {
     }
 }
 
+std::shared_ptr<Cartridge> getCartridge(std::vector<uint8_t> rom) {
+    std::unique_ptr<CartridgeHeaderInformation> info = headerInformation(rom);
+
+    return std::make_shared<ROMOnly>(rom, std::move(info));
+}
 
 Cartridge::Cartridge(std::vector<uint8_t> rom, std::shared_ptr<CartridgeHeaderInformation> headerInfo)
     : rom(std::move(rom)), cartridgeInformation(headerInfo)
     {
-        
     }
+
+ROMOnly::ROMOnly(std::vector<uint8_t> rom, std::unique_ptr<CartridgeHeaderInformation> headerInfo)
+    : Cartridge(rom, std::move(headerInfo)) 
+    {
+    }
+
+uint8_t ROMOnly::readByte(uint16_t byte) {
+    return rom.at(byte);
+}
+
+void ROMOnly::write(uint16_t address, uint8_t byte) {
+    std::cout << "attempting to write to address: " << unsigned(address) << "on non-existing ram";
+}
+
+
