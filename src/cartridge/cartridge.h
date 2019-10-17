@@ -76,8 +76,12 @@ class CartridgeHeaderInformation {
 extern std::unique_ptr<CartridgeHeaderInformation> headerInformation(std::vector<uint8_t>);
 
 class Cartridge {
-public:
-    Cartridge(
-        std::unique_ptr<CartridgeHeaderInformation> cartridge_info
-    );
+    public:
+        Cartridge(
+            std::vector<uint8_t>,
+            std::shared_ptr<CartridgeHeaderInformation>
+        );
+    protected: 
+        std::vector<uint8_t> rom;
+        std::shared_ptr<CartridgeHeaderInformation> cartridgeInformation;
 };
