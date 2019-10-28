@@ -67,7 +67,7 @@ namespace cpu {
 
     void Opcodes::opcodeLd(uint8_t (cpu::Registers::*addressRegister)(), uint16_t (cpu::Registers::*registerValue)()) {
         uint16_t val = (reg->*registerValue)();
-        // auto memoryValue = mmu->read(val);
+        auto memoryValue = mmu->read(val);
 
         std::cout << "yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: " << unsigned(val); 
     }

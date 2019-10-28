@@ -1,8 +1,12 @@
 #include <iostream>
 #include "mmu.h"
 #include "bootRom.h"
+#include "../cartridge/cartridge.h"
 
 namespace memory {
+    Mmu::Mmu(std::shared_ptr<Cartridge> &_cartridge) {
+        cartridge = _cartridge;
+    }
     uint8_t Mmu::read(uint16_t address) {
         /* ROM */
         if(inRange(address, 0x00, 0x7FFF)) {
@@ -11,6 +15,8 @@ namespace memory {
                 return bootDMG[address];
             }
             /*external */
+            std::cout << "fetching opcode from cartridge: " << unsigned(address) << "\n";
+            return cartridge->readByte(address);
         }
 
         /* VRAM */

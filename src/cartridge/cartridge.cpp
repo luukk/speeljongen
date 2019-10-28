@@ -98,9 +98,10 @@ Cartridge::Cartridge(std::vector<uint8_t> rom, std::shared_ptr<CartridgeHeaderIn
 ROMOnly::ROMOnly(std::vector<uint8_t> rom, std::unique_ptr<CartridgeHeaderInformation> headerInfo)
     : Cartridge(rom, std::move(headerInfo)) 
     {
+        std::cout << "romonly init\n";
     }
 
-uint8_t ROMOnly::readByte(uint16_t byte) {
+uint8_t ROMOnly::readByte(uint16_t byte) const {
     return rom.at(byte);
 }
 

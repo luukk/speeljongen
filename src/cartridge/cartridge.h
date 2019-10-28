@@ -82,7 +82,11 @@ class Cartridge {
             std::vector<uint8_t>,
             std::shared_ptr<CartridgeHeaderInformation>
         );
+
         virtual ~Cartridge() = default;
+        
+        virtual void write(uint16_t, uint8_t) = 0;
+        virtual uint8_t readByte(uint16_t) const = 0; 
 
     protected: 
         std::vector<uint8_t> rom;
@@ -94,6 +98,6 @@ std::shared_ptr<Cartridge> getCartridge(std::vector<uint8_t>);
 class ROMOnly: public Cartridge {
     public:
         ROMOnly(std::vector<uint8_t>, std::unique_ptr<CartridgeHeaderInformation>);
-        uint8_t readByte(uint16_t);
-        void write(uint16_t, uint8_t);
+        uint8_t readByte(uint16_t) const override;
+        void write(uint16_t, uint8_t) override;
 };
