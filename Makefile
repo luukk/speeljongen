@@ -1,20 +1,21 @@
-TARGET ?= a.out
-SRC_DIRS ?= ./src
+CXX ?= g++
+SRC_DIR ?= ./src
+SRC_EXT = cpp
+OBJ_DIR = build
+SRC_FILES := $(shell find $(SRC_DIRS) -name '*.cpp')
+OBJ_FILES = $(SRC_FILES:$(SRC_PATH)/%.$(SRC_EXT)=$(OBJ_DIR)/%.o)
+BIN_PATH = $(OBJ_DIR)/bin
+DEPS = $(OBJ_FILES:.o=.d)
 
-SRCS := $(shell find $(SRC_DIRS) -name *.cpp -or -name *.c -or -name *.s)
-OBJS := $(addsuffix .o,$(basename $(SRCS)))
-DEPS := $(OBJS:.o=.d)
+default: make
 
-INC_DIRS := $(shell find $(SRC_DIRS) -type d)
-INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+make: 
+	$(CXX) $(SRC_FILES) -o speeljongen
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP
+dirs:
+	@echo "Creating directories"
+	@mkdir -p $(dir $(OBJ_FILES))
+	@mkdir -p $(BIN_PATH)
 
-$(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o $@ $(LOADLIBES) $(LDLIBS)
-
-.PHONY: clean
 clean:
-	$(RM) $(TARGET) $(OBJS) $(DEPS)
-
--include $(DEPS)
+	rm -rf *.o
