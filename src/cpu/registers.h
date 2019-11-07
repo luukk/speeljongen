@@ -1,3 +1,4 @@
+#include "cpuConsts.h"
 #pragma once
 
 namespace cpu {

@@ -12,7 +12,6 @@ class Gameboy {
         void tick();
         
         std::shared_ptr<Cartridge> cartridge;
-
-        cpu::CPU cpu;
-        memory::Mmu mmu;
+        std::shared_ptr<memory::Mmu> mmu;
+        std::unique_ptr<cpu::CPU> cpu;
 };

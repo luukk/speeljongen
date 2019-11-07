@@ -1,4 +1,5 @@
 #pragma once
+#include "cpuConsts.h"
 #include "registers.h"
 
 #define CARRY_BIT_POSITION 5
@@ -9,10 +10,8 @@
 namespace cpu {
     class Flags {
         private:
-            Registers *reg;
             uint8_t transformBitPosition(bool, int);
         public:
-            Flags(Registers* registerList);
             bool getCarry();
             bool getHalfCarry();
             bool getSubtract();

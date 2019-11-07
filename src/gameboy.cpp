@@ -1,15 +1,13 @@
 #include <iostream>
 #include <vector>
 #include "gameboy.h"
-#include "cartridge/cartridge.h"
-// #include 
 
-Gameboy::Gameboy(std::vector<uint8_t> cartridgeData)
-    : cartridge(getCartridge(std::move(cartridgeData))),
-    mmu(cartridge),
-    cpu(&mmu)
+Gameboy::Gameboy(std::vector<uint8_t> cartridgeData) 
+    :cartridge(getCartridge(std::move(cartridgeData))),
+     mmu(std::make_shared<memory::Mmu>(cartridge)),
+     cpu(std::make_unique<cpu::CPU>(mmu))
     {
-        // std::cout << &info;
+        std::cout << "cpu mmutest: " << mmu <<"\n";
         std::cout << "gameboy constructor called\n";
     }
 
@@ -18,5 +16,5 @@ void Gameboy::run() {
 }
 
 void Gameboy::tick() {
-    cpu.tick();
+    // cpu.tick();
 }

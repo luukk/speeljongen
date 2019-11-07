@@ -6,12 +6,15 @@
 
 
 namespace cpu {
+    extern void stackPush(uint8_t, uint8_t);
+
     enum class Condition {
         NZ,
         Z,
         NC,
         C,
     };
+
     class Opcodes {
         private: 
             Registers *reg;
@@ -22,7 +25,7 @@ namespace cpu {
             void opcodeLd(void (cpu::Registers::*)(uint8_t));
             void opcodeLd(void (cpu::Registers::*)(uint16_t));
             void opcodeLd(uint16_t (cpu::Registers::*)(), uint8_t (cpu::Registers::*)());
-            void opcodeLd(uint8_t (cpu::Registers::*)(), uint16_t (cpu::Registers::*)());
+            void opcodeLd(void (cpu::Registers::*)(uint8_t), uint16_t (cpu::Registers::*)());
             void opcodeXor(uint8_t (cpu::Registers::*)());
             void opcodeLdd(uint16_t (cpu::Registers::*)(), uint8_t (cpu::Registers::*)());
             void opcodeJr();
@@ -35,11 +38,12 @@ namespace cpu {
             void _opcodeInc(void (cpu::Registers::*)(uint8_t), uint8_t);
             void opcodeInc(void (cpu::Registers::*)(uint8_t), uint8_t (cpu::Registers::*)());  
             void opcodeDisableInterrupt();
+            void opcodeCall();
             uint8_t getByteFromPC();
             int8_t getSignedByteFromPC();
             bool shouldBranch(Condition);
         public:
-            Opcodes(Registers* registerList, Flags* flags, memory::Mmu* _mmu);
+            Opcodes();
             void opcodeBank(uint8_t);
             void cbOpcodeBank(uint8_t);
     };

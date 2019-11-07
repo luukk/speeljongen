@@ -5,11 +5,11 @@
 namespace cpu {
     bool blockInterrupts = false;
 
-    Opcodes::Opcodes(Registers* _reg, Flags* _flag, memory::Mmu* _mmu) {
-        reg = _reg;
-        flag = _flag;
-        mmu = _mmu;
+    Opcodes::Opcodes() {
+        std::cout << "opcode init";
+        std::cout << registerList->getPC() << "\n";
     }
+
     void Opcodes::opcodeBank(uint8_t opcode) {
         switch (opcode) {
             case 0x00:opcodeNop();break;
@@ -24,12 +24,12 @@ namespace cpu {
             case 0x77:opcodeLd(&Registers::getHL, &Registers::getA);
             case 0xAF:opcodeXor(&Registers::getA);break;
             case 0xE0:opcodeLdhIntoData();break;
-            case 0x1A:opcodeLd(&Registers::getA, &Registers::getDE);break;
+            case 0xCD:opcodeCall();break;
+            case 0x1A:opcodeLd(&Registers::setA, &Registers::getDE);break;
             case 0xE2:opcodeLdhIntoA();break;
             case 0xF3:opcodeDisableInterrupt();break;
         }
     }
-
 
     void Opcodes::cbOpcodeBank(uint8_t opcode) {
         switch (opcode) {
@@ -65,11 +65,23 @@ namespace cpu {
         mmu->write(address,byte);
     }
 
-    void Opcodes::opcodeLd(uint8_t (cpu::Registers::*addressRegister)(), uint16_t (cpu::Registers::*registerValue)()) {
+    void Opcodes::opcodeLd(void (cpu::Registers::*addressRegister)(uint8_t), uint16_t (cpu::Registers::*registerValue)()) {
         uint16_t val = (reg->*registerValue)();
-        auto memoryValue = mmu->read(val);
+        uint8_t memoryValue = mmu->read(val);
+        std::cout << "yeeeeeeeeeeeeeeeeeeeeeee\n";
 
-        std::cout << "yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: " << unsigned(val); 
+        (reg->*addressRegister)(memoryValue);
+    }
+
+    void Opcodes::opcodeCall() {
+        std::cout << "opcodeCall \n";
+        uint8_t lowByte = getByteFromPC();
+        uint8_t highByte = getByteFromPC();
+
+        cpu::stackPush(lowByte, highByte);
+
+        std::cout << "Opcodes::opcodeCall lowByte\n" << unsigned(lowByte);
+        std::cout << "Opcodes::opcodeCall highByte\n" << unsigned(highByte);
     }
 
     /**XOR**/

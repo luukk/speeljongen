@@ -5,6 +5,7 @@
 
 namespace memory {
     Mmu::Mmu(std::shared_ptr<Cartridge> &_cartridge) {
+        std::cout << "mmu cartridge info: " << _cartridge << "\n";
         cartridge = _cartridge;
     }
     uint8_t Mmu::read(uint16_t address) {

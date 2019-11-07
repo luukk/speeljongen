@@ -14,7 +14,6 @@ namespace memory {
             uint8_t zp[128];
 
             std::shared_ptr<Cartridge> cartridge;
-   
             Mmu(std::shared_ptr<Cartridge>&);
             uint8_t read(uint16_t);
             void write(uint16_t, uint8_t);
