@@ -1,4 +1,5 @@
 CXX ?= g++
+CXX_FLAGS ?= -std=gnu++17
 SRC_DIR ?= ./src
 SRC_EXT = cpp
 OBJ_DIR = build
@@ -10,7 +11,7 @@ DEPS = $(OBJ_FILES:.o=.d)
 default: make
 
 make: 
-	$(CXX) $(SRC_FILES) -o speeljongen
+	$(CXX) $(CXX_FLAGS) $(SRC_FILES) -o speeljongen
 
 dirs:
 	@echo "Creating directories"
