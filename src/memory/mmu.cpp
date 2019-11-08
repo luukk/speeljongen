@@ -11,7 +11,7 @@ namespace memory {
     uint8_t Mmu::read(uint16_t address) {
         /* ROM */
         if(inRange(address, 0x00, 0x7FFF)) {
-            if(inRange(address, 0x0, 0xFF) && bootRomActive()) {
+            if(inRange(address, 0x0, 0xFF)) {
                 std::cout << "Mmu::read fetching boot rom opcode: " << unsigned(bootDMG[address]) << '\n';
                 return bootDMG[address];
             }

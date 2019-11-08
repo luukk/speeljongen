@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 #include "opcodes.h"
 #include "../bitUtils.h"
 
@@ -47,30 +48,31 @@ namespace cpu {
     void Opcodes::opcodeLd(void (cpu::Registers::*setRegister)(uint8_t)) {
        uint8_t byte = getByteFromPC();
 
-       (reg->*setRegister)(byte);
+       std::invoke(setRegister, registerList, byte);
     }
 
-    void Opcodes::opcodeLd(void (cpu::Registers::*setRegister)(uint16_t)) {
+    void Opcodes::opcodeLd(void (Registers::*setRegister)(uint16_t)) {
         uint8_t lowByte = getByteFromPC();
         uint8_t highByte = getByteFromPC();
 
         uint16_t composedBytes = static_cast<uint16_t>((highByte << 8) | lowByte);
-        (reg->*setRegister)(composedBytes);
+
+        std::invoke(setRegister, registerList, composedBytes);
     }
 
     void Opcodes::opcodeLd(uint16_t (cpu::Registers::*addressRegister)(), uint8_t (cpu::Registers::*registerValue)()) {
-        uint16_t address = (reg->*addressRegister)();
-        uint8_t byte = (reg->*registerValue)();
+        uint16_t address = std::invoke(addressRegister, registerList);
+        uint8_t byte = std::invoke(registerValue, registerList);
 
         mmu->write(address,byte);
     }
 
     void Opcodes::opcodeLd(void (cpu::Registers::*addressRegister)(uint8_t), uint16_t (cpu::Registers::*registerValue)()) {
-        uint16_t val = (reg->*registerValue)();
+        uint16_t val = std::invoke(registerValue, registerList);
         uint8_t memoryValue = mmu->read(val);
         std::cout << "yeeeeeeeeeeeeeeeeeeeeeee\n";
 
-        (reg->*addressRegister)(memoryValue);
+        std::invoke(addressRegister, registerList, memoryValue);
     }
 
     void Opcodes::opcodeCall() {
@@ -88,75 +90,75 @@ namespace cpu {
 
     void Opcodes::_opcodeXor(uint8_t value) {
         std::cout << "Opcodes::opcodeXor setting " << unsigned(value) << " in register a\n";
-        uint8_t regAValue = reg->getA();
+        uint8_t regAValue = registerList->getA();
         uint8_t result = regAValue ^ value;
 
-        flag->setZero(result);
-        flag->setSubtract(false);
-        flag->setHalfCarry(false);
-        flag->setCarry(false);
+        flags->setZero(result);
+        flags->setSubtract(false);
+        flags->setHalfCarry(false);
+        flags->setCarry(false);
 
-        reg->setA(result);
+        registerList->setA(result);
     }
 
     void Opcodes::opcodeXor(uint8_t (cpu::Registers::*registerValue)()) {
-        uint8_t regAValue = (reg->*registerValue)();
+        uint8_t regAValue = std::invoke(registerValue, registerList);
         _opcodeXor(regAValue);
     }
 
     /**LDH**/
     
     void Opcodes::opcodeLdhIntoA() {
-        uint8_t regCValue = reg->getC();
+        uint8_t regCValue = registerList->getC();
         auto address = 0xFF00 + regCValue;
 
-        mmu->write(address,reg->getA());
+        mmu->write(address,registerList->getA());
     }
 
     void Opcodes::opcodeLdhIntoData() {
         uint8_t offset = getByteFromPC();
         auto address = 0xFF00 + offset;
 
-        mmu->write(address, reg->getA());
+        mmu->write(address, registerList->getA());
     }
 
     /**INC**/
 
     void Opcodes::_opcodeInc(void (cpu::Registers::*setRegister)(uint8_t), uint8_t registerValue) {
         auto increment = registerValue++;
-        (reg->*setRegister)(increment);
+        std::invoke(setRegister, registerList, increment);
     }
 
     void Opcodes::opcodeInc(void (cpu::Registers::*setRegister)(uint8_t), uint8_t (cpu::Registers::*registerValue)()) {
-        uint8_t value = (reg->*registerValue)();
+        uint8_t value = std::invoke(registerValue, registerList);
         _opcodeInc(setRegister, value);
 
-        flag->setZero(value == 0);
-        flag->setSubtract(false);
-        flag->setHalfCarry((value & 0x0F) == 0x00);
+        flags->setZero(value == 0);
+        flags->setSubtract(false);
+        flags->setHalfCarry((value & 0x0F) == 0x00);
     }
 
     /**LDD**/
 
     void Opcodes::opcodeLdd(uint16_t (cpu::Registers::*addressRegister)(), uint8_t (cpu::Registers::*registerValue)()) {
-        uint16_t address = (reg->*addressRegister)();
-        uint8_t byte = (reg->*registerValue)();
+        uint16_t address = std::invoke(addressRegister, registerList);
+        uint8_t byte = std::invoke(registerValue, registerList);
 
         mmu->write(address,byte);
 
-        reg->setHL(reg->getHL()-1); //decrement hl register
+        registerList->setHL(registerList->getHL()-1); //decrement hl register
     }
 
     /**BIT**/
 
     void Opcodes::_opcodeBit(const uint8_t bit, const uint8_t registerValue) {
-        flag->setZero(!checkBit(registerValue, bit));
-        flag->setSubtract(false);
-        flag->setHalfCarry(true);
+        flags->setZero(!checkBit(registerValue, bit));
+        flags->setSubtract(false);
+        flags->setHalfCarry(true);
     }
     
     void Opcodes::opcodeBit(const uint8_t bit, uint8_t (cpu::Registers::*registerValue)()) {
-        uint8_t regValue = (reg->*registerValue)();
+        uint8_t regValue = std::invoke(registerValue, registerList);
         _opcodeBit(bit, regValue);
     };
 
@@ -164,13 +166,14 @@ namespace cpu {
 
     void Opcodes::opcodeJr() {
         int8_t offset = getSignedByteFromPC();
-        uint16_t pc = reg->getPC();
+        uint16_t pc = registerList->getPC();
 
         std::cout << "opcodJR offset: " <<  static_cast<int16_t>(offset) << "\n"; 
         std::cout << "opcodJR new pc location: " <<  static_cast<uint16_t>(pc + offset) << "\n"; 
-        std::cout << "opcodeJR hl: " << static_cast<uint16_t>(reg->getHL()) << "\n";
+        std::cout << "opcodeJR hl: " << static_cast<uint16_t>(registerList->getHL()) << "\n";
+        
         uint16_t newPC =  static_cast<uint16_t>(pc + offset);
-        reg->setPC(newPC);
+        registerList->setPC(newPC);
     }
 
     void Opcodes::opcodeJr(Condition condition) {
@@ -180,23 +183,23 @@ namespace cpu {
             /* /null/dev argument */
             getSignedByteFromPC();
         }
-        std::cout << "opcodeJr flag stat: " << flag->getZero() << "\n";
+        std::cout << "opcodeJr flag stat: " << flags->getZero() << "\n";
     }
 
     /**INTERRUPTS**/
 
     void Opcodes::opcodeDisableInterrupt() {
-        cpu::blockInterrupts = true;
+        // cpu::blockInterrupts = true;
     }
 
 
     uint8_t Opcodes::getByteFromPC() {
-        uint16_t pc = reg->getPC();
+        uint16_t pc = registerList->getPC();
         uint8_t byte = mmu->read(pc);
 
         std::cout << "getByteFromPC byte: " << unsigned(byte) << "\n"; 
         
-        reg->incrementPC();
+        registerList->incrementPC();
 
         return byte;
     }
@@ -211,16 +214,16 @@ namespace cpu {
 
         switch (condition) {
         case Condition::C:
-            shouldBranch = flag->getCarry();
+            shouldBranch = flags->getCarry();
             break;
         case Condition::NC:
-            shouldBranch = !flag->getCarry();
+            shouldBranch = !flags->getCarry();
             break;
         case Condition::Z:
-            shouldBranch = flag->getZero();
+            shouldBranch = flags->getZero();
             break;
         case Condition::NZ:
-            shouldBranch = !flag->getZero();
+            shouldBranch = !flags->getZero();
             break;
         }
 

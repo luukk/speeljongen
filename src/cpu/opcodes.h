@@ -1,4 +1,5 @@
 #pragma once
+#include "cpuConsts.h"
 #include "registers.h"
 #include "../memory/mmu.h"
 #include "flags.h"
@@ -16,11 +17,7 @@ namespace cpu {
     };
 
     class Opcodes {
-        private: 
-            Registers *reg;
-            memory::Mmu *mmu;
-            Flags *flag;
-            
+        private:            
             void opcodeNop();
             void opcodeLd(void (cpu::Registers::*)(uint8_t));
             void opcodeLd(void (cpu::Registers::*)(uint16_t));

@@ -16,5 +16,5 @@ void Gameboy::run() {
 }
 
 void Gameboy::tick() {
-    // cpu.tick();
+    cpu->tick();
 }

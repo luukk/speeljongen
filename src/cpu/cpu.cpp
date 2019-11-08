@@ -36,18 +36,17 @@ namespace cpu {
     }
 
     uint8_t CPU::fetchOpcode(uint16_t pc) {   
-        // uint8_t opcode = mmu->read(pc);
+        uint8_t opcode = mmu->read(pc);
         registerList->incrementPC();
-        // return opcode;
-        return 0;
+        return opcode;
     }
 
     void CPU::excecuteOpcode(uint8_t opcode) {
-        // opcodes.opcodeBank(opcode);
+        opcodes->opcodeBank(opcode);
     }
 
     void CPU::excecuteCBOpcode(uint8_t opcode) {
-        // opcodes.cbOpcodeBank(opcode);
+        opcodes->cbOpcodeBank(opcode);
     }
 
     /* cpu namespace */
