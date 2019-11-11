@@ -126,7 +126,7 @@ namespace cpu {
     /**INC**/
 
     void Opcodes::_opcodeInc(void (cpu::Registers::*setRegister)(uint8_t), uint8_t registerValue) {
-        auto increment = registerValue++;
+        uint8_t increment = registerValue+=1;
         std::invoke(setRegister, registerList, increment);
     }
 
