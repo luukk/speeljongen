@@ -62,7 +62,7 @@ namespace memory {
         
     }
 
-    void Mmu::write(uint16_t address, uint8_t adres) {
+    void Mmu::write(uint16_t address, uint8_t byte) {
              /* ROM */
         if(inRange(address, 0x00, 0x7FFF)) {
             
@@ -95,7 +95,8 @@ namespace memory {
 
         /* Mapped IO */
         if(inRange(address, 0xFF00, 0xFF7F)) {
-
+            writeIo(address, byte);
+            return;
         }
 
         /* Interrupt Enable register */
@@ -110,7 +111,15 @@ namespace memory {
     } 
 
     void Mmu::writeIo(u_int16_t address, uint8_t byte) {
-
+        switch(address) {
+            /* TODO: audio channel 1: tone and sweep*/ 
+            case 0xFF10:
+            case 0xFF11:
+            case 0xFF12:
+            case 0xFF13:
+            case 0xFF14:
+                return;
+        }
     }
 
     bool Mmu::bootRomActive() const {

@@ -46,9 +46,10 @@ namespace cpu {
     /**LOAD**/
 
     void Opcodes::opcodeLd(void (cpu::Registers::*setRegister)(uint8_t)) {
-       uint8_t byte = getByteFromPC();
+        std::cout << "opcodeLd\n";
+        uint8_t byte = getByteFromPC();
 
-       std::invoke(setRegister, registerList, byte);
+        std::invoke(setRegister, registerList, byte);
     }
 
     void Opcodes::opcodeLd(void (Registers::*setRegister)(uint16_t)) {
@@ -168,11 +169,14 @@ namespace cpu {
         int8_t offset = getSignedByteFromPC();
         uint16_t pc = registerList->getPC();
 
+        std::cout << "opcodeJR program counter: " << static_cast<uint16_t>(pc) << "\n";
         std::cout << "opcodJR offset: " <<  static_cast<int16_t>(offset) << "\n"; 
         std::cout << "opcodJR new pc location: " <<  static_cast<uint16_t>(pc + offset) << "\n"; 
         std::cout << "opcodeJR hl: " << static_cast<uint16_t>(registerList->getHL()) << "\n";
         
         uint16_t newPC =  static_cast<uint16_t>(pc + offset);
+        std::cout << "opcodeJR newPC: " << static_cast<uint16_t>(newPC) << "\n";
+
         registerList->setPC(newPC);
     }
 
