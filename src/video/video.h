@@ -12,10 +12,12 @@ namespace graphic {
         public:
             Video(std::shared_ptr<memory::Mmu>&, std::unique_ptr<cpu::CPU>&);
             ~Video() = default;
-            ColorPallete initializeColorPallete() override;
+            ColorPallete initializeColorPallete(uint8_t) override;
         private:
-            uint8_t colorPallete;
+            ColorPallete colorPallete;
             std::shared_ptr<memory::Mmu> mmu;
             std::unique_ptr<cpu::CPU> cpu;
+
+            Color getActualColor(uint8_t) const;
     };  
 }

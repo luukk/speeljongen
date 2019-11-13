@@ -119,8 +119,7 @@ namespace cpu {
     void Opcodes::opcodeLdhIntoData() {
         uint8_t offset = getByteFromPC();
         auto address = 0xFF00 + offset;
-        std::cout << address << "\n";
-        std::cout << "register A: " << unsigned(registerList->getA());
+        
         mmu->write(address, registerList->getA());
     }
 

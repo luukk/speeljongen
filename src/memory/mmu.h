@@ -6,7 +6,7 @@ namespace graphic {
     /* TODO: refactor pure virtual interface */
     class IVideo {
     public:
-        virtual ColorPallete initializeColorPallete() = 0;
+        virtual ColorPallete initializeColorPallete(uint8_t) = 0;
         virtual ~IVideo() = default; // always always always needed with interfaces
     };
 }
@@ -29,7 +29,7 @@ namespace memory {
            
             Mmu(std::shared_ptr<Cartridge>&, std::shared_ptr<graphic::IVideo>&);
             ~Mmu() = default;
-            
+
             uint8_t read(uint16_t);
             void write(uint16_t, uint8_t);
         private:

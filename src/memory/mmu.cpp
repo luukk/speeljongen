@@ -126,8 +126,9 @@ namespace memory {
             case 0xFF24:
                 return;
 
-            case 0xFF47:
+            case 0xFF47: //LCD display enable
                 std::cout << "initialize color palet";
+                video->initializeColorPallete(byte);
                 return;
         }
     }
