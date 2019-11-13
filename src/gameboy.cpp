@@ -3,12 +3,13 @@
 #include "gameboy.h"
 
 Gameboy::Gameboy(std::vector<uint8_t> cartridgeData) 
-    :cartridge(getCartridge(std::move(cartridgeData))),
-     mmu(std::make_shared<memory::Mmu>(cartridge)),
-     cpu(std::make_unique<cpu::CPU>(mmu))
+    :cartridge(getCartridge(std::move(cartridgeData)))
     {
-        std::cout << "cpu mmutest: " << mmu <<"\n";
         std::cout << "gameboy constructor called\n";
+    
+        video = std::make_shared<graphic::Video>(mmu, cpu);
+        mmu = std::make_shared<memory::Mmu>(cartridge, video);
+        cpu = std::make_unique<cpu::CPU>(mmu);
     }
 
 void Gameboy::run() {

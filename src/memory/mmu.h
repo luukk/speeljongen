@@ -1,7 +1,18 @@
 #pragma once
+#include "../video/definitions.h"
 #include "../cartridge/cartridge.h"
 
+namespace graphic {
+    /* TODO: refactor pure virtual interface */
+    class IVideo {
+    public:
+        virtual ColorPallete initializeColorPallete() = 0;
+        virtual ~IVideo() = default; // always always always needed with interfaces
+    };
+}
+
 namespace memory {
+
     class Mmu {
         public:
             uint8_t rom0[16384];
@@ -14,7 +25,11 @@ namespace memory {
             uint8_t zp[128];
 
             std::shared_ptr<Cartridge> cartridge;
-            Mmu(std::shared_ptr<Cartridge>&);
+            std::shared_ptr<graphic::IVideo> video;
+           
+            Mmu(std::shared_ptr<Cartridge>&, std::shared_ptr<graphic::IVideo>&);
+            ~Mmu() = default;
+            
             uint8_t read(uint16_t);
             void write(uint16_t, uint8_t);
         private:

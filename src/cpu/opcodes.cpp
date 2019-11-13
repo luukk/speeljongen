@@ -22,7 +22,7 @@ namespace cpu {
             case 0x31:opcodeLd(&Registers::setSP);break;
             case 0x32:opcodeLdd(&Registers::getHL, &Registers::getA);break;
             case 0x3E:opcodeLd(&Registers::setA);break;
-            case 0x77:opcodeLd(&Registers::getHL, &Registers::getA);
+            case 0x77:opcodeLd(&Registers::getHL, &Registers::getA);break;
             case 0xAF:opcodeXor(&Registers::getA);break;
             case 0xE0:opcodeLdhIntoData();break;
             case 0xCD:opcodeCall();break;
@@ -119,7 +119,8 @@ namespace cpu {
     void Opcodes::opcodeLdhIntoData() {
         uint8_t offset = getByteFromPC();
         auto address = 0xFF00 + offset;
-
+        std::cout << address << "\n";
+        std::cout << "register A: " << unsigned(registerList->getA());
         mmu->write(address, registerList->getA());
     }
 

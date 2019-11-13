@@ -4,10 +4,13 @@
 #include "../cartridge/cartridge.h"
 
 namespace memory {
-    Mmu::Mmu(std::shared_ptr<Cartridge> &_cartridge) {
-        std::cout << "mmu cartridge info: " << _cartridge << "\n";
-        cartridge = _cartridge;
+    Mmu::Mmu(std::shared_ptr<Cartridge> &_cartridge, std::shared_ptr<graphic::IVideo> &_vid)
+    :cartridge(_cartridge),
+     video(_vid)
+    {
+        std::cout << "mmu init\n";
     }
+
     uint8_t Mmu::read(uint16_t address) {
         /* ROM */
         if(inRange(address, 0x00, 0x7FFF)) {
@@ -22,7 +25,6 @@ namespace memory {
 
         /* VRAM */
         if(inRange(address, 0x8000, 0x9FFF)) {
-
         }
 
           /* External (cartridge) RAM */
@@ -75,7 +77,7 @@ namespace memory {
 
         /* Internal work RAM */
         if(inRange(address, 0xC000, 0xDFFF)) {
-
+            
         }
 
         /* Copy of working RAM */
@@ -118,6 +120,14 @@ namespace memory {
             case 0xFF12:
             case 0xFF13:
             case 0xFF14:
+                return;
+            
+            /* TODO: audio sound control register*/
+            case 0xFF24:
+                return;
+
+            case 0xFF47:
+                std::cout << "initialize color palet";
                 return;
         }
     }

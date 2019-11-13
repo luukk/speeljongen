@@ -3,6 +3,7 @@
 #include "cpu/cpu.h"
 #include "memory/mmu.h"
 #include "cartridge/cartridge.h"
+#include "video/video.h"
 
 class Gameboy {
     public:
@@ -12,6 +13,7 @@ class Gameboy {
         void tick();
         
         std::shared_ptr<Cartridge> cartridge;
+        std::shared_ptr<graphic::IVideo> video;
         std::shared_ptr<memory::Mmu> mmu;
         std::unique_ptr<cpu::CPU> cpu;
 };
