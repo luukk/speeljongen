@@ -11,7 +11,7 @@ int main() {
 
     int ticks = 0;
     //24594
-    while(ticks <= 24595) {
+    while(ticks <= 24596) {
         std::cout << "\ntick nr: " << ticks << std::endl;
         gameboy->run();
         ticks++;

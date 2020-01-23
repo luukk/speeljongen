@@ -17,6 +17,7 @@ namespace cpu {
             case 0x0C:opcodeInc(&Registers::setC, &Registers::getC);break;
             case 0x0E:opcodeLd(&Registers::setC);break;
             case 0x11:opcodeLd(&Registers::setDE);break;
+            case 0x13:opcodeInc(&Registers::getDE);break;
             case 0x20:opcodeJr(Condition::NZ);break;
             case 0x21:opcodeLd(&Registers::setHL);break;
             case 0x31:opcodeLd(&Registers::setSP);break;
@@ -81,7 +82,9 @@ namespace cpu {
 
         cpu::stackPush(lowByte, highByte);
         
-        registerList->setPC(composeBytes(highByte, lowByte));      
+        // registerList->setPC(composeBytes(highByte, lowByte));      
+
+        std::cout << "program counter: " << unsigned(registerList->getPC()) << std::endl; 
     }
 
     /**XOR**/
@@ -125,6 +128,12 @@ namespace cpu {
     void Opcodes::_opcodeInc(void (cpu::Registers::*setRegister)(uint8_t), uint8_t registerValue) {
         uint8_t increment = registerValue+=1;
         std::invoke(setRegister, registerList, increment);
+    }
+
+    void Opcodes::opcodeInc(uint16_t (cpu::Registers::*registerValue)()) {
+        uint8_t value = std::invoke(registerValue, registerList);
+
+        std::cout << "opcode inc value : " << unsigned(value) << std::endl;
     }
 
     void Opcodes::opcodeInc(void (cpu::Registers::*setRegister)(uint8_t), uint8_t (cpu::Registers::*registerValue)()) {

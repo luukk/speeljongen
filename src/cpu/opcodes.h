@@ -31,6 +31,7 @@ namespace cpu {
             void opcodeBit(const uint8_t, uint8_t (cpu::Registers::*)());
             void opcodeLdhIntoA();
             void opcodeLdhIntoData();
+            void opcodeInc(uint16_t (cpu::Registers::*)());
             void _opcodeInc(void (cpu::Registers::*)(uint8_t), uint8_t);
             void opcodeInc(void (cpu::Registers::*)(uint8_t), uint8_t (cpu::Registers::*)());  
             void opcodeDisableInterrupt();
