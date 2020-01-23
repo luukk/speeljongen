@@ -3,7 +3,6 @@
 #include "src/gameboy.h"
 #include "src/files.h"
 
-
 int main() {
     auto readBytes = read_bytes("games/tetris.gb");
     std::unique_ptr<Gameboy> gameboy(new Gameboy(readBytes));
@@ -11,26 +10,10 @@ int main() {
     gameboy->run();
 
     int x = 0;
-    //24590
-    // while(x <=24600) {
-    //     gameboy->run();
-    //     x++;
-    // }
-    // tick();
-    // gameboy();
-    // cpu::registers registerList;
-    // cpu::flags flagSet(&registerList);
-
-
-    // flagSet.setCarry(0);
-    // flagSet.setZero(1);
-
-    // flagSet.getCarry();
-    // std::cout << unsigned(registerList.getF());
-
-    // flagSet->setCarry();
-    // std::cout << *registerList;
-    // flags.setCarry();
-    // flags.getCarry();
+    //24594
+    while(x <= 24594) {
+        gameboy->run();
+        x++;
+    }
 }
 

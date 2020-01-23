@@ -7,7 +7,6 @@
 
 
 namespace cpu {
-    extern void stackPush(uint8_t, uint8_t);
 
     enum class Condition {
         NZ,

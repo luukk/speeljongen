@@ -9,6 +9,7 @@ namespace memory {
      video(_vid)
     {
         std::cout << "mmu init\n";
+        memory = std::vector<uint8_t>(0x10000); //initialize std vector with memory space
     }
 
     uint8_t Mmu::read(uint16_t address) {
@@ -72,15 +73,15 @@ namespace memory {
 
         /* VRAM */
         if(inRange(address, 0x8000, 0x9FFF)) {
-
+            std::cout << "writing to vram";
         }
 
-        /* Internal work RAM */
+        /* WRAM0 Internal work RAM */
         if(inRange(address, 0xC000, 0xDFFF)) {
             
         }
 
-        /* Copy of working RAM */
+        /* ECHO Copy of working RAM */
         if(inRange(address, 0xE000, 0xDFFF)) {
 
         }
@@ -95,10 +96,17 @@ namespace memory {
 
         }
 
-        /* Mapped IO */
+        /* I/O registers */
         if(inRange(address, 0xFF00, 0xFF7F)) {
+            std::cout << "writing to IO\n";
             writeIo(address, byte);
             return;
+        }
+
+        /* HRAM (internal cpu ram) */
+        if(inRange(address, 0xFF80, 0xFFFE)) {
+            std::cout << "writing to zero page ram\n";
+            memory.at(address) = byte;
         }
 
         /* Interrupt Enable register */
@@ -140,4 +148,5 @@ namespace memory {
     bool Mmu::inRange(uint16_t address, int addressLow, int addressHigh ) const {
         return address >= addressLow && address <= addressHigh;
     }
+
 }

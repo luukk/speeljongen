@@ -2,6 +2,8 @@
 #include "../video/definitions.h"
 #include "../cartridge/cartridge.h"
 
+#include <vector>
+
 namespace graphic {
     /* TODO: refactor pure virtual interface */
     class IVideo {
@@ -23,6 +25,7 @@ namespace memory {
             uint8_t oam[160];
             uint8_t io[128];
             uint8_t zp[128];
+            uint8_t hram[126];
 
             std::shared_ptr<Cartridge> cartridge;
             std::shared_ptr<graphic::IVideo> video;
@@ -39,5 +42,7 @@ namespace memory {
             void writeIo(const uint16_t, uint8_t);
 
             bool inRange(uint16_t, int, int) const;
+
+            std::vector<uint8_t> memory;
     };
 }

@@ -7,6 +7,7 @@ namespace cpu {
     std::unique_ptr<Opcodes> opcodes;
     std::shared_ptr<memory::Mmu> mmu;
 
+
     CPU::CPU(std::shared_ptr<memory::Mmu> &_mmu)
         {
             std::cout << "cpu init\n";
@@ -52,7 +53,16 @@ namespace cpu {
     /* cpu namespace */
     
     void stackPush(uint8_t lowByte, uint8_t highByte) {
+        uint16_t stackPointer = registerList->getSP();
+        registerList->setSP(stackPointer-=1);
+        
+        mmu->write(stackPointer, highByte);
 
-        std::cout << "stackPush\n";
+        std::cout << "cpu stackpush\n" << static_cast<uint16_t>(registerList->getSP()) << "\n";
+        
+        registerList->setSP(stackPointer-=1);
+        mmu->write(stackPointer, lowByte);
+
+        std::cout << "cpu stackpush\n" << static_cast<uint16_t>(registerList->getSP()) << "\n";
     }
 }

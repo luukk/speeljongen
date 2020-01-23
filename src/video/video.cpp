@@ -9,7 +9,6 @@ namespace graphic {
       cpu(std::move(_cpu))
     {
         std::cout << "video init\n";
-    
     }
 
     ColorPallete Video::initializeColorPallete(uint8_t paletteByte) {

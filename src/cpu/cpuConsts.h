@@ -2,7 +2,6 @@
 #include "../memory/mmu.h"
 #include <memory>
 
-
 namespace cpu {
     class Registers;
     class Flags;
@@ -12,4 +11,6 @@ namespace cpu {
     extern std::unique_ptr<Flags> flags;
     extern std::unique_ptr<Opcodes> opcodes;
     extern std::shared_ptr<memory::Mmu> mmu;
+    
+    extern void stackPush(uint8_t, uint8_t);
 }

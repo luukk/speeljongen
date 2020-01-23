@@ -71,20 +71,17 @@ namespace cpu {
     void Opcodes::opcodeLd(void (cpu::Registers::*addressRegister)(uint8_t), uint16_t (cpu::Registers::*registerValue)()) {
         uint16_t val = std::invoke(registerValue, registerList);
         uint8_t memoryValue = mmu->read(val);
-        std::cout << "yeeeeeeeeeeeeeeeeeeeeeee\n";
 
         std::invoke(addressRegister, registerList, memoryValue);
     }
 
     void Opcodes::opcodeCall() {
-        std::cout << "opcodeCall \n";
         uint8_t lowByte = getByteFromPC();
         uint8_t highByte = getByteFromPC();
 
         cpu::stackPush(lowByte, highByte);
-
-        std::cout << "Opcodes::opcodeCall lowByte\n" << unsigned(lowByte);
-        std::cout << "Opcodes::opcodeCall highByte\n" << unsigned(highByte);
+        
+        registerList->setSP(composeBytes(lowByte, highByte));      
     }
 
     /**XOR**/
