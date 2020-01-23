@@ -9,11 +9,12 @@ int main() {
     
     gameboy->run();
 
-    int x = 0;
+    int ticks = 0;
     //24594
-    while(x <= 24594) {
+    while(ticks <= 24595) {
+        std::cout << "\ntick nr: " << ticks << std::endl;
         gameboy->run();
-        x++;
+        ticks++;
     }
 }
 

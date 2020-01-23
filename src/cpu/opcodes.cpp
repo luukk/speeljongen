@@ -81,7 +81,7 @@ namespace cpu {
 
         cpu::stackPush(lowByte, highByte);
         
-        registerList->setSP(composeBytes(lowByte, highByte));      
+        registerList->setPC(composeBytes(highByte, lowByte));      
     }
 
     /**XOR**/

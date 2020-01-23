@@ -73,7 +73,7 @@ namespace memory {
 
         /* VRAM */
         if(inRange(address, 0x8000, 0x9FFF)) {
-            std::cout << "writing to vram";
+            std::cout << "writing to vram" << std::endl;
         }
 
         /* WRAM0 Internal work RAM */

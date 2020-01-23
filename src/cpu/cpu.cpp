@@ -19,7 +19,6 @@ namespace cpu {
         };
 
     void CPU::tick() {
-        std::cout << "\nnew tick \n";
         uint16_t pc = registerList->getPC();
         uint8_t opcode = fetchOpcode(pc);
 
@@ -39,6 +38,7 @@ namespace cpu {
     uint8_t CPU::fetchOpcode(uint16_t pc) {   
         uint8_t opcode = mmu->read(pc);
         registerList->incrementPC();
+
         return opcode;
     }
 
@@ -55,14 +55,9 @@ namespace cpu {
     void stackPush(uint8_t lowByte, uint8_t highByte) {
         uint16_t stackPointer = registerList->getSP();
         registerList->setSP(stackPointer-=1);
-        
         mmu->write(stackPointer, highByte);
 
-        std::cout << "cpu stackpush\n" << static_cast<uint16_t>(registerList->getSP()) << "\n";
-        
         registerList->setSP(stackPointer-=1);
         mmu->write(stackPointer, lowByte);
-
-        std::cout << "cpu stackpush\n" << static_cast<uint16_t>(registerList->getSP()) << "\n";
     }
 }
